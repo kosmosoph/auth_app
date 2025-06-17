@@ -1,0 +1,36 @@
+# Node modules (nikada ne treba da budu u gitu)
+node_modules/
+
+# Log fajlovi
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS fajlovi
+.DS_Store
+Thumbs.db
+
+# .env fajl sa tajnim podacima
+.env
+.env.*
+
+# build/kompajlirane datoteke (ako ih imaš)
+dist/
+build/
+
+# coverage fajlovi (npr. za testiranje)
+coverage/
+
+# IDE/Editor fajlovi
+.vscode/
+.idea/
+
+# TypeScript output (ako koristiš)
+*.tsbuildinfo
+
+# Optional: lock fajlovi ako koristiš samo jedan paket menadžer
+# Ako koristiš npr. samo npm, možeš ignorisati ostale
+# yarn.lock
+# pnpm-lock.yaml
+guides.txt

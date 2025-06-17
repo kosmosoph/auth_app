@@ -1,0 +1,21 @@
+// Create the Server
+
+const express = require("express");
+const authRoutes = require("./auth");
+
+const PORT = "5000";
+
+const app = express();
+
+// Potrebno za parsiranje JSON tela zahteva u registraciji i loginu
+app.use(express.json());
+
+app.use("/auth", authRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Hello there");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
