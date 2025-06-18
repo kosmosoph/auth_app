@@ -1,8 +1,8 @@
 // Implement User Registration
 
-const express = require("express");
-const bcrypt = require("bcrypt");
-const db = require("./db");
+import express from "express";
+import bcrypt from "bcrypt";
+import database from "../config/database.js";
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
 
     // Insert the new user into the database
     const query = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-    db.query(query, [name, email, hashedPassword], (err, result) => {
+    database.query(query, [name, email, hashedPassword], (err, result) => {
       if (err) {
         throw err;
       }
@@ -34,7 +34,7 @@ router.post("/login", (req, res) => {
 
   // Find the user by email
   const query = "SELECT * FROM users WHERE email = ?";
-  db.query(query, [email], async (err, results) => {
+  database.query(query, [email], async (err, results) => {
     if (err) {
       throw err;
     }
@@ -56,4 +56,5 @@ router.post("/login", (req, res) => {
   });
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

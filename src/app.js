@@ -1,10 +1,12 @@
 // Create the Server
 
-const express = require("express");
-const authRoutes = require("./auth");
+import express from "express";
+import authRoutes from "./routes/authRoutes.js";
+import {config }from "dotenv";
 
-const PORT = "5000";
+config();
 
+const PORT = process.env.PORT || 8081;
 const app = express();
 
 // Potrebno za parsiranje JSON tela zahteva u registraciji i loginu
