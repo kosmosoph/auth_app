@@ -2,7 +2,7 @@
 
 import express from "express";
 import authRoutes from "./routes/authRoutes.js";
-import {config }from "dotenv";
+import { config } from "dotenv";
 
 config();
 

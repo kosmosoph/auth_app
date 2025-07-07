@@ -1,6 +1,6 @@
 //Create the Connection File
 
-import {config} from "dotenv";
+import { config } from "dotenv";
 import mysql from "mysql2";
 
 config();
