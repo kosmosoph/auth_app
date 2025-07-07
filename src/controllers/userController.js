@@ -1,5 +1,9 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { config } from "dotenv";
 import User from "../models/User.js";
+
+config();
 
 // register new user controller
 const registerUser = async (req, res) => {
@@ -49,7 +53,44 @@ const loginUser = async (req, res) => {
       const isMatch = await bcrypt.compare(password, existingUser.password);
 
       if (isMatch) {
-        res.status(200).json({ message: "Login successfull" });
+        // Generate JWT token
+        const accessToken = jwt.sign(
+          {
+            user: {
+              username: existingUser.name,
+              email: existingUser.email,
+            },
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: "15m" }
+        );
+
+        const refreshToken = jwt.sign(
+          {
+            user: {
+              username: existingUser.name,
+              email: existingUser.email,
+            },
+          },
+          process.env.REFRESH_TOKEN_SECRET,
+          { expiresIn: "7d" }
+        );
+
+        res.cookie("accessToken", accessToken, {
+          httpOnly: true, // can't be accessed via JS
+          secure: process.env.NODE_ENV === "production", // send only over HTTPS in production
+          sameSite: "Strict", // adjust to "Lax" or "None" if cross-site (CSRF protection)
+          maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true, // can't be accessed via JS
+          secure: process.env.NODE_ENV === "production", // send only over HTTPS in production
+          sameSite: "Strict", // adjust to "Lax" or "None" if cross-site
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        res.status(200).json({ message: "Login successfully" });
       } else {
         res.status(401).json({ message: "Invalid credentials" });
       }
@@ -61,8 +102,6 @@ const loginUser = async (req, res) => {
       .status(500)
       .json({ message: "Error logging user", error: error.message });
   }
-
-  // TODO: generate JWT token
 };
 
 export { registerUser, loginUser };

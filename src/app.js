@@ -3,14 +3,15 @@
 import express from "express";
 import authRoutes from "./routes/authRoutes.js";
 import { config } from "dotenv";
+import cookieParser from "cookie-parser";
 
 config();
 
 const PORT = process.env.PORT || 8081;
 const app = express();
 
-// Potrebno za parsiranje JSON tela zahteva u registraciji i loginu
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/auth", authRoutes);
 
